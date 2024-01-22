@@ -17,7 +17,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           touch ~/.ssh/known_hosts
-          ssh-keyscan -t rsa your-ec2-instance-ip >> ~/.ssh/known_hosts
+          ssh-keyscan -t rsa 107.20.108.41 >> ~/.ssh/known_hosts
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -36,4 +36,4 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy to AWS EC2
-        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.YOUR_SSH_SECRET_NAME }} ubuntu@your-ec2-instance-ip "cd /var/www/html && git pull && composer update && composer install --no-dev && php artisan migrate --force && php artisan optimize"
+        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.YOUR_SSH_SECRET_NAME }} ubuntu@107.20.108.41 "cd /var/www/html && git pull && composer update && composer install --no-dev && php artisan migrate --force && php artisan optimize"
