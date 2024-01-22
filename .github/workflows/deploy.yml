@@ -19,7 +19,7 @@ jobs:
           touch ~/.ssh/known_hosts
           ssh-keyscan -t rsa 107.20.108.41 >> ~/.ssh/known_hosts
 
-      - name: Set up PHP
+      - name: Set up PHP.
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.0'
