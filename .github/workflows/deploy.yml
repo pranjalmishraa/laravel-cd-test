@@ -36,4 +36,9 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy to AWS EC2
-        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.YOUR_SSH_SECRET_NAME }} ubuntu@107.20.108.41 "cd /var/www/html && git pull && composer update && composer install --no-dev && php artisan migrate --force && php artisan optimize"
+        run: |
+          mkdir -p ~/.ssh
+          echo "AKIAUWNZIYUX2CXAPGHY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@107.20.108.41 "cd /var/www/html && git pull && composer update && composer install --no-dev && php artisan migrate --force && php artisan optimize"
+    
