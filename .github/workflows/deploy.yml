@@ -13,11 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Update known hosts
-        run: ssh-keyscan -H your-ec2-instance-ip >> ~/.ssh/known_hosts
-
       - name: Create SSH directory
         run: mkdir -p ~/.ssh
+
+      - name: Update known hosts
+        run: ssh-keyscan -H your-ec2-instance-ip >> ~/.ssh/known_hosts
 
       - name: Create SSH config file
         run: echo "StrictHostKeyChecking no" > ~/.ssh/config
