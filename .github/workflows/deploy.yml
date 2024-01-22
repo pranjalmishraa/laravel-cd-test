@@ -37,8 +37,13 @@ jobs:
 
       - name: Deploy to AWS EC2
         run: |
-          mkdir -p ~/.ssh
-          echo "AKIAUWNZIYUX2CXAPGHY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@107.20.108.41 "cd /var/www/html && git pull && composer update && composer install --no-dev && php artisan migrate --force && php artisan optimize"
+          echo "${secrets.AWS_SECRET_ACCESS_KEY}" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${secrets.AWS_ACCESS_KEY_ID}@${secrets.AWS_INSTANCE_IP} '
+          cd /var/www/html && 
+          git pull && 
+          composer install - no-dev && 
+          php artisan migrate - force && 
+          php artisan optimize
+          '
+
     
