@@ -13,23 +13,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Create SSH directory
-        run: mkdir -p ~/.ssh
-
       - name: Update known hosts
-        run: ssh-keyscan -H 107.20.108.41 >> ~/.ssh/known_hosts
-
-      - name: Create SSH config file
-        run: echo "StrictHostKeyChecking no" > ~/.ssh/config
+        run: |
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+          ssh-keyscan -t rsa your-ec2-instance-ip >> ~/.ssh/known_hosts
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.0'
-
-      - name: Composer Update
+      - name: composer update
         run: composer update
-
       - name: Install dependencies
         run: composer install --no-dev
 
@@ -41,4 +36,4 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Deploy to AWS EC2
-        run: ssh -i ${{ secrets.AWS_INSTANCE_IP }} ubuntu@107.20.108.41 "cd /var/www/html && git pull && composer install --no-dev && php artisan migrate --force && php artisan optimize"
+        run: ssh -o StrictHostKeyChecking=no -i ${{ secrets.YOUR_SSH_SECRET_NAME }} ubuntu@your-ec2-instance-ip "cd /var/www/html && git pull && composer update && composer install --no-dev && php artisan migrate --force && php artisan optimize"
