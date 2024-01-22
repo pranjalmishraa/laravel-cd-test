@@ -28,5 +28,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      - name: Disable strict host key checking
+        run: echo "StrictHostKeyChecking no" >> ~/.ssh/config
+        
+
       - name: Deploy to AWS EC2
         run: ssh ${{ secrets.AWS_INSTANCE_IP }} "cd /var/www/html && git pull && composer update && composer install --no-dev && php artisan migrate --force && php artisan optimize"
