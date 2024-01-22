@@ -17,7 +17,7 @@ jobs:
         run: mkdir -p ~/.ssh
 
       - name: Update known hosts
-        run: ssh-keyscan -H your-ec2-instance-ip >> ~/.ssh/known_hosts
+        run: ssh-keyscan -H 107.20.108.41 >> ~/.ssh/known_hosts
 
       - name: Create SSH config file
         run: echo "StrictHostKeyChecking no" > ~/.ssh/config
